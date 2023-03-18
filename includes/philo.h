@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 19:17:50 by eminatch          #+#    #+#             */
-/*   Updated: 2023/03/17 20:18:06 by eminatch         ###   ########.fr       */
+/*   Updated: 2023/03/18 19:21:07 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ typedef struct s_philo
 	int				id;
 	int				eat_count;
 	bool			dead;
-	int				time_to_die;
-	pthread_mutex_t	*right_fork;
+	long int		last_meal;
+	pthread_mutex_t	right_fork;
 	pthread_mutex_t	*left_fork;
 	pthread_t		th;
 	struct s_philo	*prev;
@@ -79,24 +79,20 @@ typedef struct s_table
 	t_philo			*start;
 	t_philo			*philo;
 	int				nb_philo;
-	time_t			time_of_day;
-	int				time_ms;
+	long int		time;
 	int				nb_meal;
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				time_to_die;
 	pthread_t		monitor;
-	pthread_mutex_t	*time_keeper;
+	pthread_mutex_t	time_keeper;
 }				t_table;
 
 /* MAIN */
 int		main(int ac, char **av);
 
-/* PHILO_UTILS */
-void	ft_write_msg(char *s);
-
 /* CONDITIONS */
-t_philo	*fill_table(int ac, char **av, t_philo *philo);
+bool	check_table(int ac, char **av, t_table *table);
 int		ft_atoi_philo(const char *s, int *flag);
 void	ft_atoi_philo_bis(const char *s, int *flag, int *j, int *nb);
 bool	is_nb(char *av);
@@ -107,13 +103,14 @@ bool	ft_check_conditions(char **av);
 /* TABLE */
 t_philo	*ft_init_philo(t_table *table);
 void	philo_list(t_philo *philo, int id);
-bool	table_list(t_table *table);
+bool	fill_table_list(t_table *table);
+bool	init_fork(t_table *table);
 
 /* ROUTINE */
 bool	philosophers_start_routine(t_table *table);
 void	philosophers_end_routine(t_table *table);
 void	*philosophers_routine(void *param);
-time_t	today_is_ms(int time_ms);
+long int	get_time(void);
 
 /* ROUTINE UTILS */
 void	join_threads(t_table *table);
@@ -126,5 +123,6 @@ void	*ft_monitoring(void *param);
 void	ft_error(char *s);
 void	ft_free_philo(t_table *table);
 char	**ft_free(char **str);
+void	ft_write_msg(t_philo *philo, char *s);
 
 #endif

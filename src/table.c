@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 13:50:23 by eminatch          #+#    #+#             */
-/*   Updated: 2023/03/17 20:10:54 by eminatch         ###   ########.fr       */
+/*   Updated: 2023/03/18 20:09:06 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,8 @@ t_philo	*ft_init_philo(t_table *table)
 	new->next = NULL;
 	new->table = table;
 	new->dead = false;
-	new->table->nb_meal = 0;
+	new->last_meal = get_time();
 	new->id = 1;
-	new->table->time_of_day = 0;
 	return (new);
 }
 
@@ -43,12 +42,12 @@ void	philo_list(t_philo *philo, int id)
 	philo->next->dead = false;
 	philo->next->eat_count = 0;
 	philo->next->id = id;
-	philo->next->time_to_die = philo->time_to_die;
+	philo->next->last_meal = get_time();
 }
 
 /* To a philo list from a nb of philos, looping with ids, and define
 prev, next, start and end as nodes from the list*/
-bool	table_list(t_table *table)
+bool	fill_table_list(t_table *table)
 {
 	t_philo	*temp;
 	t_philo	*end;
@@ -90,7 +89,7 @@ bool	init_fork(t_table *table)
 	{
 		if (start == NULL)
 			start = table->start;
-		if (pthread_mutex_init(table->start->right_fork, NULL) != 0)
+		if (pthread_mutex_init(&table->start->right_fork, NULL) != 0)
 			return (false);
 		table->start = table->start->next;
 	}
@@ -99,10 +98,10 @@ bool	init_fork(t_table *table)
 	{
 		if (start == NULL)
 			start = table->start;
-		table->start->left_fork = table->start->next->right_fork;
+		table->start->left_fork = &table->start->next->right_fork;
 		table->start = table->start->next;
 	}
-	if (pthread_mutex_init(table->time_keeper, NULL) != 0)
+	if (pthread_mutex_init(&table->time_keeper, NULL) != 0)
 		return (false);
 	return (true);
 }

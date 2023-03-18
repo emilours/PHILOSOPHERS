@@ -6,39 +6,42 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 15:31:43 by eminatch          #+#    #+#             */
-/*   Updated: 2023/03/17 20:50:01 by eminatch         ###   ########.fr       */
+/*   Updated: 2023/03/18 17:29:50 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-t_philo	*fill_table(int ac, char **av, t_philo *philo)
+/* Fills in the attributes with av and returns true if success */
+bool	check_table(int ac, char **av, t_table *table)
 {
-	int		flag;
+	int	flag;
 
 	flag = 0;
-	while (av)
+	if (ft_check_conditions(av) == false)
 	{
-		philo->table->nb_philo = ft_atoi_philo(av[1], &flag);
-		philo->table->time_to_die = ft_atoi_philo(av[2], &flag);
-		philo->table->time_to_eat = ft_atoi_philo(av[3], &flag);
-		philo->table->time_to_sleep = ft_atoi_philo(av[4], &flag);
-		philo->eat_count = -1;
-		if (ac - 1 == 5)
-			philo->eat_count = ft_atoi_philo(av[5], &flag);
-		if (flag != 0 || ft_check_conditions(av) == false)
-		{
-			ft_error(ERROR_AV_DIGIT);
-			break ;
-		}
-		else if (philo->table->nb_philo == 0)
-		{
-			ft_error(ERROR_NO_PHILO);
-			break ;
-		}
-		
+		ft_error(ERROR_AV_DIGIT);
+		return (false);
 	}
-	return (philo);
+	table->nb_philo = ft_atoi_philo(av[1], &flag);
+	table->time_to_die = ft_atoi_philo(av[2], &flag);
+	table->time_to_eat = ft_atoi_philo(av[3], &flag);
+	table->time_to_sleep = ft_atoi_philo(av[4], &flag);
+	if (ac - 1 == 5)
+		table->nb_meal = ft_atoi_philo(av[5], &flag);
+	else
+		table->nb_meal = -1;
+	if (flag != 0)
+	{
+		ft_error(ERROR_AV_DIGIT);
+		return (false);
+	}
+	else if (table->nb_philo == 0)
+	{
+		ft_error(ERROR_NO_PHILO);
+		return (false);
+	}
+	return (true);
 }
 
 int	ft_atoi_philo(const char *s, int *flag)

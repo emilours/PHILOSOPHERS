@@ -6,7 +6,7 @@
 #    By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/02 16:56:42 by eminatch          #+#    #+#              #
-#    Updated: 2023/02/18 17:37:15 by eminatch         ###   ########.fr        #
+#    Updated: 2023/03/18 17:56:54 by eminatch         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,6 @@ SRC = 	main.c \
 		conditions.c \
 		conditions_utils.c \
 		errors.c \
-		philo_utils.c \
 		routine.c \
 		routine_utils.c \
 		table.c \
@@ -53,6 +52,9 @@ clean:
 
 fclean: clean
 	@${RM} -f $(NAME)
+
+debug : fclean
+	@make --no-print-directory CFLAGS+="-g3 -pthread -fsanitize=thread"
 
 re: fclean all
 

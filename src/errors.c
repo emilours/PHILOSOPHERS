@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 15:31:51 by eminatch          #+#    #+#             */
-/*   Updated: 2023/03/17 20:38:50 by eminatch         ###   ########.fr       */
+/*   Updated: 2023/03/18 19:20:15 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@ void	ft_error(char *s)
 	printf("%s", s);
 }
 
+/* Frees the memory allocated to the linked list of t_philo structures,
+iterates through the list and frees each node until it reaches the
+original starting node */
 void	ft_free_philo(t_table *table)
 {
 	t_philo	*start;
@@ -44,16 +47,10 @@ void	ft_free_philo(t_table *table)
 	table->start = NULL;
 }
 
-char	**ft_free(char **str)
-{	
-	int	i;
-
-	i = 0;
-	while (str[i] != NULL)
-	{
-		free(str[i]);
-		i++;
-	}
-	free(str);
-	return (NULL);
+void	ft_write_msg(t_philo *philo, char *s)
+{
+	pthread_mutex_lock(&philo->table->time_keeper);
+	if (philo->dead == false)
+		printf("%ld %d %s", (get_time() - philo->table->time), philo->id, s);
+	pthread_mutex_unlock(&philo->table->time_keeper);
 }
