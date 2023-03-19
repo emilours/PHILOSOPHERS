@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 19:17:50 by eminatch          #+#    #+#             */
-/*   Updated: 2023/03/18 19:21:07 by eminatch         ###   ########.fr       */
+/*   Updated: 2023/03/19 20:25:54 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,30 +28,29 @@
 
 /* COLORS */
 
-# define NC	"\e[0m"
-# define YELLOW	"\e[33m"
-# define BYELLOW	"\e[1;33m"
-# define RED	"\e[31m"
-# define GREEN	"\e[32m"
+# define CYAN		"\e[36m"
+# define YELLOW		"\e[33m"
+# define RED		"\e[31m"
+# define GREEN		"\e[32m"
+# define BLUE 		"\e[34m"
+# define PINK		"\e[38;5;206m"
 
 /* ERROR MESSAGES */
 
 # define ERROR_MSG "Error:\n"
+# define ERROR_ZERO "Values must be higher than 0\n"
+# define ERROR_MAX "Values out of int max range\n"
 # define ERROR_AC "Invalid number of arguments\n"
-# define ERROR_AV_DIGIT "Invalid digit\n"
-# define ERROR_NO_PHILO "No philosopher sitting at the table\n"
+# define ERROR_DIGIT "Invalid digit\n"
+# define ERROR_PHILO "No philosopher sitting at the table\n"
 # define ERROR_TIME "Invalid timezone\n"
 # define ERROR_MUTEX "Could not initialize mutexes.\n"
 # define ERROR_TH "Could not initialize threads\n"
-# define ERROR_TIME_MS "Could not get time in miliseconds\n"
+# define ERROR_TIME_MS "Could not get time in ms\n"
 # define ERROR_PHILO_TABLE "Could not initialize philo_list\n"
 
 /* MESSAGES */
 
-# define FORK "Has taken a fork\n"
-# define EAT "Is eating\n"
-# define SLEEP "Is sleeping\n"
-# define THINK "Is thinking\n"
 # define DEATH "died\n"
 # define EAT_COUNT " meals for each philosophers\n"
 
@@ -88,41 +87,58 @@ typedef struct s_table
 	pthread_mutex_t	time_keeper;
 }				t_table;
 
+/* STATUS */
+
+typedef enum e_status
+{
+	DIED = 0,
+	EATING = 1,
+	SLEEPING = 2,
+	THINKING = 3,
+	FORK = 4,
+}	t_status;
+
 /* MAIN */
-int		main(int ac, char **av);
+bool		check_philo_and_forks(t_table *table);
+int			main(int ac, char **av);
 
 /* CONDITIONS */
-bool	check_table(int ac, char **av, t_table *table);
-int		ft_atoi_philo(const char *s, int *flag);
-void	ft_atoi_philo_bis(const char *s, int *flag, int *j, int *nb);
-bool	is_nb(char *av);
-bool	is_sign(char c);
-bool	is_digit(char c);
-bool	ft_check_conditions(char **av);
+bool		check_table(int ac, char **av, t_table *table);
+int			ft_atoi_philo(const char *s, int *flag);
+void		ft_atoi_philo_bis(const char *s, int *flag, int *j, int *nb);
+bool		check_values(t_table *table);
+bool		one_philo(t_table *table);
+
+/* CONDITION UTILS */
+bool		is_nb(char *av);
+bool		is_sign(char c);
+bool		is_digit(char c);
+bool		ft_check_conditions(char **av);
 
 /* TABLE */
-t_philo	*ft_init_philo(t_table *table);
-void	philo_list(t_philo *philo, int id);
-bool	fill_table_list(t_table *table);
-bool	init_fork(t_table *table);
+t_philo		*ft_init_philo(t_table *table);
+void		philo_list(t_philo *philo, int id);
+bool		fill_table_list(t_table *table);
+bool		init_fork(t_table *table);
 
 /* ROUTINE */
-bool	philosophers_start_routine(t_table *table);
-void	philosophers_end_routine(t_table *table);
-void	*philosophers_routine(void *param);
+bool		philosophers_start_routine(t_table *table);
+void		philosophers_end_routine(t_table *table);
+void		*philosophers_routine(void *param);
+void		philo_cycle(t_philo *philo);
 long int	get_time(void);
 
 /* ROUTINE UTILS */
-void	join_threads(t_table *table);
-bool	is_dead(t_philo *philo);
-void	kill_philos(t_table *table);
-bool	check_meals(t_philo *philo);
-void	*ft_monitoring(void *param);
+void		join_threads(t_table *table);
+bool		is_dead(t_philo *philo);
+void		kill_philos(t_table *table);
+bool		check_meals(t_philo *philo);
+void		*ft_monitoring(void *param);
 
 /* ERRORS */
-void	ft_error(char *s);
-void	ft_free_philo(t_table *table);
-char	**ft_free(char **str);
-void	ft_write_msg(t_philo *philo, char *s);
+void		ft_error(char *s);
+void		ft_free_philo(t_table *table);
+void		ft_print_status(t_philo *philo, char *c, char *str);
+void		ft_write_msg(t_philo *philo, t_status status);
 
 #endif

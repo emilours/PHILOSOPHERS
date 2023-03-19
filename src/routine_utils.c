@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 14:50:45 by eminatch          #+#    #+#             */
-/*   Updated: 2023/03/18 20:14:01 by eminatch         ###   ########.fr       */
+/*   Updated: 2023/03/19 20:21:04 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,12 @@ true. Otherwise, it returns false */
 bool	is_dead(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->table->time_keeper);
-	if ((get_time() - philo->last_meal) > philo->table->time_to_die || philo->dead == true)
+	if ((get_time() - philo->last_meal) > philo->table->time_to_die
+		|| philo->dead == true)
 	{
 		philo->dead = true;
-		printf("%ld %d is dead\n", (get_time() - philo->table->time), philo->id);
-		// printf("%d", philo->id);
-		// printf("is dead");
+		printf("%ld %d \e[31mdied\n", (get_time() - philo->table->time),
+			philo->id);
 		kill_philos(philo->table);
 		pthread_mutex_unlock(&philo->table->time_keeper);
 		return (true);
@@ -90,8 +90,8 @@ bool	check_meals(t_philo *philo)
 		}
 		philo = philo->next;
 	}
-	printf("%d", philo->eat_count);
-	ft_error(EAT_COUNT); // utilise printf
+	printf("\033[1;36mAll philosophers have eaten at least %d times.\033[0m\n",
+		philo->eat_count);
 	kill_philos(philo->table);
 	pthread_mutex_unlock(&philo->table->time_keeper);
 	return (true);

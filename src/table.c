@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 13:50:23 by eminatch          #+#    #+#             */
-/*   Updated: 2023/03/18 20:09:06 by eminatch         ###   ########.fr       */
+/*   Updated: 2023/03/19 18:25:54 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ bool	fill_table_list(t_table *table)
 	int		id;
 
 	id = 2;
-	if (table->nb_philo <= 1)
+	if (table->nb_philo < 1)
 		return (false);
 	table->start = ft_init_philo(table);
 	if (!table->start)

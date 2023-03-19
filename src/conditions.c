@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 15:31:43 by eminatch          #+#    #+#             */
-/*   Updated: 2023/03/18 17:29:50 by eminatch         ###   ########.fr       */
+/*   Updated: 2023/03/19 20:25:16 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ bool	check_table(int ac, char **av, t_table *table)
 	flag = 0;
 	if (ft_check_conditions(av) == false)
 	{
-		ft_error(ERROR_AV_DIGIT);
+		ft_error(ERROR_DIGIT);
 		return (false);
 	}
 	table->nb_philo = ft_atoi_philo(av[1], &flag);
@@ -33,12 +33,28 @@ bool	check_table(int ac, char **av, t_table *table)
 		table->nb_meal = -1;
 	if (flag != 0)
 	{
-		ft_error(ERROR_AV_DIGIT);
+		ft_error(ERROR_DIGIT);
 		return (false);
 	}
-	else if (table->nb_philo == 0)
+	if (check_values(table) == false)
+		return (false);
+	return (true);
+}
+
+bool	check_values(t_table *table)
+{
+	if (table->nb_philo <= 0 || table->time_to_die <= 0
+		|| table->time_to_eat <= 0 || table->time_to_sleep <= 0
+		|| (table->nb_meal <= 0 && table->nb_meal != -1))
 	{
-		ft_error(ERROR_NO_PHILO);
+		ft_error(ERROR_ZERO);
+		return (false);
+	}
+	if (table->nb_philo > INT_MAX || table->time_to_eat > INT_MAX
+		|| table->time_to_die > INT_MAX || table->time_to_sleep > INT_MAX
+		|| table->nb_meal > INT_MAX)
+	{
+		ft_error(ERROR_MAX);
 		return (false);
 	}
 	return (true);
@@ -84,4 +100,15 @@ void	ft_atoi_philo_bis(const char *s, int *flag, int *j, int *nb)
 		*nb = *nb * 10 + *s - '0';
 		s++;
 	}
+}
+
+bool	one_philo(t_table *table)
+{
+	pthread_mutex_lock(&table->philo->right_fork);
+	ft_write_msg(table->philo, FORK);
+	usleep(500);
+	if (is_dead(table->philo) == false)
+		return (false);
+	pthread_mutex_unlock(&table->philo->right_fork);
+	return (true);
 }

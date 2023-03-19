@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 12:13:05 by eminatch          #+#    #+#             */
-/*   Updated: 2023/03/18 20:13:24 by eminatch         ###   ########.fr       */
+/*   Updated: 2023/03/19 20:17:06 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,11 @@ bool	philosophers_start_routine(t_table *table)
 	pthread_mutex_lock(&table->time_keeper);
 	while (table->start != start)
 	{
+		if (table->nb_philo == 1)
+		{
+			if (one_philo(table) == false)
+				return (false);
+		}
 		if (start == NULL)
 			start = table->start;
 		if (pthread_create(&table->start->th, NULL,
@@ -42,7 +47,7 @@ bool	philosophers_start_routine(t_table *table)
 	}
 	if (pthread_create(&table->monitor, NULL, &ft_monitoring, table) != 0)
 		return (false);
-	table->time = get_time(); /* heure de depart */
+	table->time = get_time();
 	pthread_mutex_unlock(&table->time_keeper);
 	return (true);
 }
@@ -87,25 +92,30 @@ void	*philosophers_routine(void *param)
 			break ;
 		}
 		pthread_mutex_unlock(&philo->table->time_keeper);
-		pthread_mutex_lock(&philo->right_fork);
-		ft_write_msg(philo, FORK);
-		pthread_mutex_lock(philo->left_fork);
-		ft_write_msg(philo, FORK);
-		ft_write_msg(philo, EAT);
-		pthread_mutex_lock(&philo->table->time_keeper);
-		philo->last_meal = get_time();
-		philo->eat_count++;
-		pthread_mutex_unlock(&philo->table->time_keeper);
-		usleep(philo->table->time_to_eat * 1000);
-		pthread_mutex_unlock(philo->left_fork);
-		pthread_mutex_unlock(&philo->right_fork);
-		ft_write_msg(philo, SLEEP);
-		usleep(philo->table->time_to_sleep * 1000);
-		ft_write_msg(philo, THINK);
+		philo_cycle(philo);
 		if (philo->table->nb_philo % 2 == 1)
 			usleep(200 * 1000);
 		else
 			usleep(500);
 	}
 	return (NULL);
+}
+
+void	philo_cycle(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->right_fork);
+	ft_write_msg(philo, FORK);
+	pthread_mutex_lock(philo->left_fork);
+	ft_write_msg(philo, FORK);
+	ft_write_msg(philo, EATING);
+	pthread_mutex_lock(&philo->table->time_keeper);
+	philo->last_meal = get_time();
+	philo->eat_count++;
+	pthread_mutex_unlock(&philo->table->time_keeper);
+	usleep(philo->table->time_to_eat * 1000);
+	pthread_mutex_unlock(philo->left_fork);
+	pthread_mutex_unlock(&philo->right_fork);
+	ft_write_msg(philo, SLEEPING);
+	usleep(philo->table->time_to_sleep * 1000);
+	ft_write_msg(philo, THINKING);
 }

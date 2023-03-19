@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 15:31:51 by eminatch          #+#    #+#             */
-/*   Updated: 2023/03/18 19:20:15 by eminatch         ###   ########.fr       */
+/*   Updated: 2023/03/19 19:57:10 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,25 @@ void	ft_free_philo(t_table *table)
 	table->start = NULL;
 }
 
-void	ft_write_msg(t_philo *philo, char *s)
+void	ft_print_status(t_philo *philo, char *c, char *str)
 {
 	pthread_mutex_lock(&philo->table->time_keeper);
 	if (philo->dead == false)
-		printf("%ld %d %s", (get_time() - philo->table->time), philo->id, s);
+		printf("%ld %d %s%s", (get_time() - philo->table->time), philo->id,
+			c, str);
 	pthread_mutex_unlock(&philo->table->time_keeper);
+}
+
+void	ft_write_msg(t_philo *philo, t_status status)
+{
+	if (status == DIED)
+		ft_print_status(philo, RED, "died\n");
+	else if (status == EATING)
+		ft_print_status(philo, GREEN, "is eating\n");
+	else if (status == SLEEPING)
+		ft_print_status(philo, BLUE, "is sleeping\n");
+	else if (status == THINKING)
+		ft_print_status(philo, PINK, "is thinking\n");
+	else if (status == FORK)
+		ft_print_status(philo, YELLOW, "has taken a fork\n");
 }
