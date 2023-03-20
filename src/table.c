@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 13:50:23 by eminatch          #+#    #+#             */
-/*   Updated: 2023/03/19 18:25:54 by eminatch         ###   ########.fr       */
+/*   Updated: 2023/03/20 14:01:53 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,8 @@ bool	init_fork(t_table *table)
 		table->start = table->start->next;
 	}
 	if (pthread_mutex_init(&table->time_keeper, NULL) != 0)
+		return (false);
+	if (pthread_mutex_init(&table->print_keeper, NULL) != 0)
 		return (false);
 	return (true);
 }

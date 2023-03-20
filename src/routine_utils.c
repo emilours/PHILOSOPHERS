@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 14:50:45 by eminatch          #+#    #+#             */
-/*   Updated: 2023/03/19 20:21:04 by eminatch         ###   ########.fr       */
+/*   Updated: 2023/03/20 19:13:27 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,19 @@ true. Otherwise, it returns false */
 bool	is_dead(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->table->time_keeper);
+	pthread_mutex_lock(&philo->table->print_keeper);
 	if ((get_time() - philo->last_meal) > philo->table->time_to_die
 		|| philo->dead == true)
 	{
 		philo->dead = true;
-		printf("%ld %d \e[31mdied\n", (get_time() - philo->table->time),
+		printf("%ld %d died\n", (get_time() - philo->table->time),
 			philo->id);
 		kill_philos(philo->table);
+		pthread_mutex_unlock(&philo->table->print_keeper);
 		pthread_mutex_unlock(&philo->table->time_keeper);
 		return (true);
 	}
+	pthread_mutex_unlock(&philo->table->print_keeper);
 	pthread_mutex_unlock(&philo->table->time_keeper);
 	return (false);
 }

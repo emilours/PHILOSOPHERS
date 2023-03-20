@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 15:31:51 by eminatch          #+#    #+#             */
-/*   Updated: 2023/03/19 19:57:10 by eminatch         ###   ########.fr       */
+/*   Updated: 2023/03/20 19:14:20 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,19 @@ void	ft_free_philo(t_table *table)
 void	ft_print_status(t_philo *philo, char *c, char *str)
 {
 	pthread_mutex_lock(&philo->table->time_keeper);
+	pthread_mutex_lock(&philo->table->print_keeper);
 	if (philo->dead == false)
-		printf("%ld %d %s%s", (get_time() - philo->table->time), philo->id,
-			c, str);
+		printf("%s%ld %d %s%s", c, (get_time() - philo->table->time), philo->id,
+			str, RESET);
+	pthread_mutex_unlock(&philo->table->print_keeper);
 	pthread_mutex_unlock(&philo->table->time_keeper);
 }
 
 void	ft_write_msg(t_philo *philo, t_status status)
 {
-	if (status == DIED)
-		ft_print_status(philo, RED, "died\n");
-	else if (status == EATING)
+	// if (status == DIED)
+	// 	ft_print_status(philo, RED, "died\n");
+	if (status == EATING)
 		ft_print_status(philo, GREEN, "is eating\n");
 	else if (status == SLEEPING)
 		ft_print_status(philo, BLUE, "is sleeping\n");

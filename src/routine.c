@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 12:13:05 by eminatch          #+#    #+#             */
-/*   Updated: 2023/03/19 20:17:06 by eminatch         ###   ########.fr       */
+/*   Updated: 2023/03/20 19:38:14 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,6 @@ bool	philosophers_start_routine(t_table *table)
 	pthread_mutex_lock(&table->time_keeper);
 	while (table->start != start)
 	{
-		if (table->nb_philo == 1)
-		{
-			if (one_philo(table) == false)
-				return (false);
-		}
 		if (start == NULL)
 			start = table->start;
 		if (pthread_create(&table->start->th, NULL,
@@ -59,8 +54,8 @@ void	philosophers_end_routine(t_table *table)
 	t_philo	*start;
 
 	start = NULL;
-	if (table->nb_philo > 1)
-		pthread_join(table->monitor, NULL);
+	//if (table->nb_philo > 1)
+	pthread_join(table->monitor, NULL);
 	while (table->start != start)
 	{
 		if (start == NULL)
@@ -69,6 +64,7 @@ void	philosophers_end_routine(t_table *table)
 		table->start = table->start->next;
 	}
 	pthread_mutex_destroy(&table->time_keeper);
+	pthread_mutex_destroy(&table->print_keeper);
 }
 
 /* Entry point for philo threads. Uses mutex locks to allow each philo
@@ -81,16 +77,21 @@ void	*philosophers_routine(void *param)
 	t_philo	*philo;
 
 	philo = (t_philo *)param;
+	if (philo->table->nb_philo == 1)
+		return (one_philo(philo));
 	if (philo->id % 2 == 0)
 		usleep(philo->table->time_to_eat * 1000);
 	while (1)
 	{
 		pthread_mutex_lock(&philo->table->time_keeper);
+		pthread_mutex_lock(&philo->table->print_keeper);
 		if (philo->dead == true)
 		{
+			pthread_mutex_unlock(&philo->table->print_keeper);
 			pthread_mutex_unlock(&philo->table->time_keeper);
 			break ;
 		}
+		pthread_mutex_unlock(&philo->table->print_keeper);
 		pthread_mutex_unlock(&philo->table->time_keeper);
 		philo_cycle(philo);
 		if (philo->table->nb_philo % 2 == 1)
@@ -103,9 +104,17 @@ void	*philosophers_routine(void *param)
 
 void	philo_cycle(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->right_fork);
+	if (philo->id % 2 == 0)
+	{
+		pthread_mutex_lock(&philo->right_fork);
+		pthread_mutex_lock(philo->left_fork);
+	}
+	else
+	{
+		pthread_mutex_lock(philo->left_fork);
+		pthread_mutex_lock(&philo->right_fork);
+	}	
 	ft_write_msg(philo, FORK);
-	pthread_mutex_lock(philo->left_fork);
 	ft_write_msg(philo, FORK);
 	ft_write_msg(philo, EATING);
 	pthread_mutex_lock(&philo->table->time_keeper);

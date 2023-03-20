@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 13:29:32 by eminatch          #+#    #+#             */
-/*   Updated: 2023/03/19 19:36:35 by eminatch         ###   ########.fr       */
+/*   Updated: 2023/03/20 20:38:46 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,4 @@ int	main(int ac, char **av)
 	return (0);
 }
 
-/* tests ultimes : 200 410 200 200 + regarder discord + testeurs && si av <= 0 +
-clean liste chainee fill table list && init fork + message eat count + norme */
-
-/* CORRECTION OREN
-	ft_usleep 100ms apres time_to_die > died et boucle infinie
-	1 mutex pour ecrire, pour manger, un pour heure, um pour dead... > possible solution pour deadlocks
-	conditions speciale pour 1 philo : il meurt usleep apres avoir pris sa premiere fourchette + afficher message mort > data race
-	*/
+/* condition pour un philo qui foire */

@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 19:17:50 by eminatch          #+#    #+#             */
-/*   Updated: 2023/03/19 20:25:54 by eminatch         ###   ########.fr       */
+/*   Updated: 2023/03/20 16:39:01 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 # define GREEN		"\e[32m"
 # define BLUE 		"\e[34m"
 # define PINK		"\e[38;5;206m"
+# define RESET 		"\e[0m"
 
 /* ERROR MESSAGES */
 
@@ -85,6 +86,7 @@ typedef struct s_table
 	int				time_to_die;
 	pthread_t		monitor;
 	pthread_mutex_t	time_keeper;
+	pthread_mutex_t	print_keeper;
 }				t_table;
 
 /* STATUS */
@@ -107,7 +109,7 @@ bool		check_table(int ac, char **av, t_table *table);
 int			ft_atoi_philo(const char *s, int *flag);
 void		ft_atoi_philo_bis(const char *s, int *flag, int *j, int *nb);
 bool		check_values(t_table *table);
-bool		one_philo(t_table *table);
+void		*one_philo(t_philo *philo);
 
 /* CONDITION UTILS */
 bool		is_nb(char *av);
