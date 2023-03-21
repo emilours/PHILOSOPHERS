@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 15:31:43 by eminatch          #+#    #+#             */
-/*   Updated: 2023/03/20 19:19:12 by eminatch         ###   ########.fr       */
+/*   Updated: 2023/03/21 16:44:31 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,11 +104,9 @@ void	ft_atoi_philo_bis(const char *s, int *flag, int *j, int *nb)
 
 void	*one_philo(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->table->time_keeper);
 	pthread_mutex_lock(&philo->right_fork);
 	ft_write_msg(philo, FORK);
 	usleep(philo->table->time_to_die * 1000);
 	pthread_mutex_unlock(&philo->right_fork);
-	pthread_mutex_unlock(&philo->table->time_keeper);
 	return (NULL);
 }

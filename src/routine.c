@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 12:13:05 by eminatch          #+#    #+#             */
-/*   Updated: 2023/03/20 19:38:14 by eminatch         ###   ########.fr       */
+/*   Updated: 2023/03/21 16:45:00 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ void	philosophers_end_routine(t_table *table)
 	t_philo	*start;
 
 	start = NULL;
-	//if (table->nb_philo > 1)
 	pthread_join(table->monitor, NULL);
 	while (table->start != start)
 	{
@@ -78,7 +77,10 @@ void	*philosophers_routine(void *param)
 
 	philo = (t_philo *)param;
 	if (philo->table->nb_philo == 1)
-		return (one_philo(philo));
+	{
+		one_philo(philo);
+		return (NULL);
+	}
 	if (philo->id % 2 == 0)
 		usleep(philo->table->time_to_eat * 1000);
 	while (1)

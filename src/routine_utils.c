@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 14:50:45 by eminatch          #+#    #+#             */
-/*   Updated: 2023/03/20 19:13:27 by eminatch         ###   ########.fr       */
+/*   Updated: 2023/03/21 16:38:30 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ bool	check_meals(t_philo *philo)
 		philo = philo->next;
 	}
 	printf("\033[1;36mAll philosophers have eaten at least %d times.\033[0m\n",
-		philo->eat_count);
+		philo->table->nb_meal);
 	kill_philos(philo->table);
 	pthread_mutex_unlock(&philo->table->time_keeper);
 	return (true);

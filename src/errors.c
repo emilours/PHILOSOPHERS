@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 15:31:51 by eminatch          #+#    #+#             */
-/*   Updated: 2023/03/20 19:14:20 by eminatch         ###   ########.fr       */
+/*   Updated: 2023/03/21 16:44:39 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,6 @@ void	ft_print_status(t_philo *philo, char *c, char *str)
 
 void	ft_write_msg(t_philo *philo, t_status status)
 {
-	// if (status == DIED)
-	// 	ft_print_status(philo, RED, "died\n");
 	if (status == EATING)
 		ft_print_status(philo, GREEN, "is eating\n");
 	else if (status == SLEEPING)

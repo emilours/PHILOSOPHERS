@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 13:29:32 by eminatch          #+#    #+#             */
-/*   Updated: 2023/03/20 20:38:46 by eminatch         ###   ########.fr       */
+/*   Updated: 2023/03/21 16:45:25 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,3 @@ int	main(int ac, char **av)
 	ft_free_philo(&table);
 	return (0);
 }
-
-/* condition pour un philo qui foire */
