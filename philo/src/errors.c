@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 15:31:51 by eminatch          #+#    #+#             */
-/*   Updated: 2023/03/21 16:44:39 by eminatch         ###   ########.fr       */
+/*   Updated: 2023/03/21 17:50:19 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,14 @@ void	ft_write_msg(t_philo *philo, t_status status)
 		ft_print_status(philo, PINK, "is thinking\n");
 	else if (status == FORK)
 		ft_print_status(philo, YELLOW, "has taken a fork\n");
+}
+
+/* Returns the current time in milliseconds. Gettimeofday gets the current
+time and calculates it in milliseconds */
+long int	get_time(void)
+{
+	struct timeval	time;
+
+	gettimeofday(&time, NULL);
+	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }

@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 13:29:32 by eminatch          #+#    #+#             */
-/*   Updated: 2023/03/21 16:45:25 by eminatch         ###   ########.fr       */
+/*   Updated: 2023/03/21 18:17:25 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ int	main(int ac, char **av)
 		return (1);
 	if (check_philo_and_forks(&table) == false)
 		return (1);
-	philosophers_start_routine(&table);
+	if (philosophers_start_routine(&table) == false)
+		return (ft_free_philo(&table), 1);
 	philosophers_end_routine(&table);
 	ft_free_philo(&table);
 	return (0);

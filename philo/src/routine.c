@@ -6,21 +6,11 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 12:13:05 by eminatch          #+#    #+#             */
-/*   Updated: 2023/03/21 16:45:00 by eminatch         ###   ########.fr       */
+/*   Updated: 2023/03/21 18:09:41 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
-
-/* Returns the current time in milliseconds. Gettimeofday gets the current
-time and calculates it in milliseconds */
-long int	get_time(void)
-{
-	struct timeval	time;
-
-	gettimeofday(&time, NULL);
-	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
-}
 
 /* Creates threads for philo and a monitor, updates the current time,
 waits 20 ms for even philos to eat and uses mutexes to synchronize
@@ -83,6 +73,12 @@ void	*philosophers_routine(void *param)
 	}
 	if (philo->id % 2 == 0)
 		usleep(philo->table->time_to_eat * 1000);
+	philosophers_routine_bis(philo);
+	return (NULL);
+}
+
+void	*philosophers_routine_bis(t_philo *philo)
+{
 	while (1)
 	{
 		pthread_mutex_lock(&philo->table->time_keeper);

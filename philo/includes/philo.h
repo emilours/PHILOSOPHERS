@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 19:17:50 by eminatch          #+#    #+#             */
-/*   Updated: 2023/03/20 16:39:01 by eminatch         ###   ########.fr       */
+/*   Updated: 2023/03/21 17:52:09 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ bool		is_nb(char *av);
 bool		is_sign(char c);
 bool		is_digit(char c);
 bool		ft_check_conditions(char **av);
+int			ft_strlen(char *s);
 
 /* TABLE */
 t_philo		*ft_init_philo(t_table *table);
@@ -127,8 +128,8 @@ bool		init_fork(t_table *table);
 bool		philosophers_start_routine(t_table *table);
 void		philosophers_end_routine(t_table *table);
 void		*philosophers_routine(void *param);
+void		*philosophers_routine_bis(t_philo *philo);
 void		philo_cycle(t_philo *philo);
-long int	get_time(void);
 
 /* ROUTINE UTILS */
 void		join_threads(t_table *table);
@@ -142,5 +143,6 @@ void		ft_error(char *s);
 void		ft_free_philo(t_table *table);
 void		ft_print_status(t_philo *philo, char *c, char *str);
 void		ft_write_msg(t_philo *philo, t_status status);
+long int	get_time(void);
 
 #endif
