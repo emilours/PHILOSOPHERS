@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 12:13:05 by eminatch          #+#    #+#             */
-/*   Updated: 2023/03/21 18:09:41 by eminatch         ###   ########.fr       */
+/*   Updated: 2023/03/22 15:33:40 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ void	*philosophers_routine_bis(t_philo *philo)
 	return (NULL);
 }
 
+/* philo whose (id) is even take his right fork first, while the
+philo whose id is odd will take his left fork first */
 void	philo_cycle(t_philo *philo)
 {
 	if (philo->id % 2 == 0)
@@ -117,7 +119,7 @@ void	philo_cycle(t_philo *philo)
 	ft_write_msg(philo, EATING);
 	pthread_mutex_lock(&philo->table->time_keeper);
 	philo->last_meal = get_time();
-	philo->eat_count++;
+	philo->eat_count += 1;
 	pthread_mutex_unlock(&philo->table->time_keeper);
 	usleep(philo->table->time_to_eat * 1000);
 	pthread_mutex_unlock(philo->left_fork);

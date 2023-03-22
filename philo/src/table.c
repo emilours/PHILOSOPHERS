@@ -6,7 +6,7 @@
 /*   By: eminatch <eminatch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 13:50:23 by eminatch          #+#    #+#             */
-/*   Updated: 2023/03/20 14:01:53 by eminatch         ###   ########.fr       */
+/*   Updated: 2023/03/22 13:31:51 by eminatch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ t_philo	*ft_init_philo(t_table *table)
 	new->next = NULL;
 	new->table = table;
 	new->dead = false;
+	new->eat_count = 0;
 	new->last_meal = get_time();
 	new->id = 1;
 	return (new);
