@@ -22,7 +22,7 @@ Simulation Rules:
 Project Requirements:
 - Written in **C** with a Makefile to compile the project.
 - No global variables.
-- Must handle proper memory management.
+- Must handle proper memory management : `make debug` to run with fsanitize
 - Use standard C library functions such as `malloc`, `free`, `pthread_create`, `pthread_mutex_lock`, etc.
 - No data races allowed.
 
@@ -38,4 +38,8 @@ The program accepts the following arguments:
 
 ## Demo
 
+<div align="center">
+
 ![Demo of philosophers project](philo/demo/demo.gif)
+
+</div>
